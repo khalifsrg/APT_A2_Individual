@@ -1,0 +1,40 @@
+Main Menu:
+    1. Display Meal Options
+    2. Purchase Meal
+    3. Save and Exit
+Administrator-Only Menu:
+    4. Add Food
+    5. Remove Food
+    6. Display Balance
+    7. Abort Program
+Select your option (1-7): Purchase Meal
+-------------
+Please enter the ID of the food you wish to purchase: Error: Food item not found or out of stock.
+Main Menu:
+    1. Display Meal Options
+    2. Purchase Meal
+    3. Save and Exit
+Administrator-Only Menu:
+    4. Add Food
+    5. Remove Food
+    6. Display Balance
+    7. Abort Program
+Select your option (1-7): Purchase Meal
+-------------
+Please enter the ID of the food you wish to purchase: You have selected "Gnocchi - Italian pasta dish made from potato and served with a rich cheese sauce". This will cost you $12.50
+Please enter ctrl-D or enter on a new line to cancel this purchase.
+Please hand over the money - type in the value of each note/coin in cents.
+You still need to give us $12.50: You still need to give us $7.50: Error: invalid denomination encountered.
+You still need to give us $7.50: Thank you for your purchase.
+Your change is: $2 50c 
+Main Menu:
+    1. Display Meal Options
+    2. Purchase Meal
+    3. Save and Exit
+Administrator-Only Menu:
+    4. Add Food
+    5. Remove Food
+    6. Display Balance
+    7. Abort Program
+Select your option (1-7): foods.dat has been saved to the system
+coins.dat has been saved to the system
