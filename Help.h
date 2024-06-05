@@ -9,10 +9,10 @@ public:
     DisplayHelp();
     ~DisplayHelp();
 
-    void DisplayHelpMain();
-    void DisplayHelpPurchase();
-    void DisplayHelpAdd();
-    void DisplayHelpRemove();
+    void displayHelpMain();
+    void displayHelpPurchase();
+    void displayHelpAdd();
+    void displayHelpRemove();
 };
 
 #endif  // HELP_H

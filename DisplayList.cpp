@@ -55,7 +55,7 @@ void DisplayList::displayMealOptions(LinkedList& foodList, bool toggle) {
      std::cout << std::endl;
 
     } else {
-        //TODO
+        std::cout << "Unable to display meal options." << std::endl;
     }
     
 }

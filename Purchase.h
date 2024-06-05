@@ -8,7 +8,7 @@ class Purchase
 {
 public:
     // Function is responsible for the entire transaction, from purchasing to change and receiving the coins/money.
-    void purchaseMeal(LinkedList& foodList, LinkedList& coinList);
+    void purchaseMeal(LinkedList& foodList, LinkedList& coinList, bool toggle);
 
     // Checks whether money given is valid, and if it is a valid currency.
     bool isValidDenomination(int value);

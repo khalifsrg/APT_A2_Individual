@@ -1,17 +1,27 @@
 #include <iostream>
 #include <limits>
 #include "Purchase.h"
+#include "Help.h"
 #include <vector>
 
 /// @brief Function responsible for meal purchase, receiving money and refunding change to the customer.
 /// @param foodList 
 /// @param coinList 
-void Purchase::purchaseMeal(LinkedList& foodList, LinkedList& coinList) {
+void Purchase::purchaseMeal(LinkedList& foodList, LinkedList& coinList, bool toggle) {
     std::string foodId;
+
     std::cout << "Purchase Meal" << std::endl;
     std::cout << "-------------" << std::endl;
     std::cout << "Please enter the ID of the food you wish to purchase: ";
 
+    // Display help if needed
+    if (toggle) {
+        std::getline(std::cin, foodId);
+        if (foodId == "help") {
+            DisplayHelp help;
+            help.displayHelpPurchase();
+        }
+    }
 
     // Reads user's input and check's if it is a valid food ID or available.
     std::cin >> foodId;
@@ -21,6 +31,7 @@ void Purchase::purchaseMeal(LinkedList& foodList, LinkedList& coinList) {
         std::cout << "Error: Food item not found or out of stock." << std::endl;
         return;
     }
+
 
     // Only space, ctrl-D or a valid denom is valid at this stage of the program
     std::cout << "You have selected \"" << selectedFood->name << " - " << selectedFood->description << "\". This will cost you $"

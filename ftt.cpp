@@ -10,14 +10,14 @@
 
 bool toggle = false;
 
-void displayMainMenu(bool adminCheck);
+void displayMainMenu(bool adminCheck, bool &toggle);
 void run(bool isAdmin);
 void loadFoodsData(const std::string& filename, LinkedList& foodList);
 void loadCoinsData(const std::string& filename, LinkedList& coinList);
 void saveAndExit(const std::string& foodsFilename, const std::string& coinsFilename, LinkedList& foodList, LinkedList& coinList);
 void addFood(LinkedList& foodList);
 void removeFood(LinkedList& foodList);
-void purchaseMeal(LinkedList& foodList, LinkedList& coinList);
+void purchaseMeal(LinkedList& foodList, LinkedList& coinList, bool toggle);
 
 /// @brief Main Function 
 /// @param argc 
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 /// @brief Run the program for the main function
 /// @param adminCheck 
 void run(bool adminCheck) {
-    // Create our linkedlists.
+    // Create our linked lists.
     LinkedList foodList;
     LinkedList coinList;
 
@@ -47,121 +47,96 @@ void run(bool adminCheck) {
     loadFoodsData("foods.dat", foodList); 
     loadCoinsData("coins.dat", coinList); 
 
-    int choice;
+    bool toggle = false; // Define and initialize toggle
     DisplayList displayList; // Create an instance of the DisplayList class
     Purchase purchase; // Create an instance of the Purchase class.
-     // Loop until the user chooses to exit
-    while (true) {
-        displayMainMenu(adminCheck);
-        std::cout << "Select your option (1-7): ";
-        
 
-        // Check if the input is not an integer
-        if (!(std::cin >> choice)) {
-             // Ignore any remaining characters in the input buffer up to a newline.
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            // Prompt the user to enter a valid number.
-            std::cout << "Invalid input. Please enter a number." << std::endl;
-            continue; // Restart the loop with prompt.
+    // Loop until the user chooses to exit
+    while (true) {
+        std::string choice;
+        displayMainMenu(adminCheck, toggle); // Pass both arguments to displayMainMenu
+
+        std::cout << "Select your option (1-8): ";
+        std::getline(std::cin, choice);
+
+        if (choice == "help" && toggle) {
+            DisplayHelp help;
+            help.displayHelpMain();
         }
 
         // Handle the user's choice
-        switch (choice) {
-            case 1:
-                // Display food options that are being sold.
-                displayList.displayMealOptions(foodList);
-                std::cout << "Press enter to continue: ";
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n'); // Set stream to max and clears input buffer
-                std::cin.get(); // Wait for Enter key
-                break;
+        if (choice == "1") {
+            // Display food options that are being sold.
+            displayList.displayMealOptions(foodList, toggle);
+            std::cout << "Press enter to continue: ";
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n'); // Set stream to max and clears input buffer
+            std::cin.get(); // Wait for Enter key
+        } else if (choice == "2") {
             // Purchase a meal
-            case 2:
-                purchase.purchaseMeal(foodList,coinList);
-                break;
-            // Save and exist program, saving files.
-            case 3:
-                saveAndExit("foods.dat", "coins.dat", foodList, coinList); //Save to a different file to compare original and new one
-                return;  // Exit the program after saving
-
-
+            purchase.purchaseMeal(foodList, coinList, toggle); 
+        } else if (choice == "3") {
+            // Save and exit program, saving files.
+            saveAndExit("foods.dat", "coins.dat", foodList, coinList); // Save to a different file to compare original and new one
+            return;  // Exit the program after saving
+        } else if (choice == "4") {
             // Safety check that user is an admin before allowing to run admin menu.
-            // Add a new food item to the foodList
-            case 4:
-                if (adminCheck) {
-                    addFood(foodList);
-                } else {
-                    std::cout << PERMISSION_DENIED_MSG << std::endl;
-                }
-                break;
-            // Remove a food item 
-            case 5:
-                if (adminCheck) {
-                    removeFood(foodList);
-                } else {
-                    std::cout << "Permission denied." << std::endl;
-                }
-                break;
-
-            // Display balance of your coins from coinList.
-            case 6:
-                if (adminCheck) {
-                   displayList.displayBalance(coinList);
-                } else {
-                    std::cout << PERMISSION_DENIED_MSG << std::endl;
-                }
-                break;
-                
-            case 7:
-                return;  // Exit and reset entire program, deallocate
-
-            case 8:
-                if (toggle == true)
-                {
-                    toggle = false;
-                    std::cout<<"Enhancements have been turned off." <<std::endl;
-                }
-                else
-                {
-                    toggle = true;
-                    std::cout<<"Enhancements have been turned on." <<std::endl;
-                }
-            default:
+            if (adminCheck) {
+                addFood(foodList);
+            } else {
                 std::cout << PERMISSION_DENIED_MSG << std::endl;
-                break;
+            }
+        } else if (choice == "5") {
+            // Remove a food item 
+            if (adminCheck) {
+                removeFood(foodList);
+            } else {
+                std::cout << PERMISSION_DENIED_MSG << std::endl;
+            }
+        } else if (choice == "6") {
+            // Display balance of your coins from coinList.
+            if (adminCheck) {
+               displayList.displayBalance(coinList);
+            } else {
+                std::cout << PERMISSION_DENIED_MSG << std::endl;
+            }
+        } else if (choice == "7") {
+            // Exit and reset entire program, deallocate
+            return;
+        } else if (choice == "8") {
+            // Toggle enhancements
+            if (adminCheck) { // Ensure this is only accessible to admin
+                toggle = !toggle;
+                std::cout << (toggle ? "Enhancements have been turned on." : "Enhancements have been turned off.") << std::endl;
+            } else {
+                std::cout << PERMISSION_DENIED_MSG << std::endl;
+            }
+        } else {
+            std::cout << "Invalid input. Please enter a number between 1 and 8." << std::endl;
         }
     }
 }
+
+
 
 //CLEAN UP!
 /// @brief Display menu to the user.
 /// @param adminCheck 
-void displayMainMenu(bool adminCheck, bool toggle){
-    while (toggle == false){
-        std::cout << "Main Menu:" << std::endl;
-        std::cout << "    1. Display Meal Options" << std::endl;
-        std::cout << "    2. Purchase Meal" << std::endl;
-        std::cout << "    3. Save and Exit" << std::endl;
+void displayMainMenu(bool adminCheck, bool& toggle) {
+    std::cout << "Main Menu:" << std::endl;
+    std::cout << "    1. Display Meal Options" << std::endl;
+    std::cout << "    2. Purchase Meal" << std::endl;
+    std::cout << "    3. Save and Exit" << std::endl;
     
-        if (adminCheck) { // Must be admin to view the admin options.
-            std::cout << "Administrator-Only Menu:" << std::endl;
-            std::cout << "    4. Add Food" << std::endl;
-            std::cout << "    5. Remove Food" << std::endl;
-            std::cout << "    6. Display Balance" << std::endl;
-            std::cout << "    7. Abort Program" << std::endl;
-            std::cout << "    8. Toggle Enhancements" << std::endl;
-        }
-
-        if (choice == "help") {
-            std::cout << PERMISSION_DENIED_MSG << std::endl;
-        } 
-    } else {
-        if (choice == "help"){
-            DisplayHelpMain()
-        }
+    if (adminCheck) { // Must be admin to view the admin options.
+        std::cout << "Administrator-Only Menu:" << std::endl;
+        std::cout << "    4. Add Food" << std::endl;
+        std::cout << "    5. Remove Food" << std::endl;
+        std::cout << "    6. Display Balance" << std::endl;
+        std::cout << "    7. Abort Program" << std::endl;
+        std::cout << "    8. Toggle Enhancements" << std::endl;
     }
-
 }
+
 
 /// @brief Loading the foods.dat file and inserting the nodes into a linked list with param foodList
 /// @param filename 
