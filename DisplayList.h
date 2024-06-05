@@ -21,7 +21,7 @@ public:
  **/
     // Update total balance
     double totalBalance;
-    void displayMealOptions(LinkedList& foodList);
+    void displayMealOptions(LinkedList& foodList, bool toggle);
 
     /** Displays and counts notes/coins that are alligned and sorted from lowest to highest value
     *Include total balance at the end. 

@@ -8,6 +8,8 @@
 #include <fstream>
 #include <sstream>
 
+bool toggle = false;
+
 void displayMainMenu(bool adminCheck);
 void run(bool isAdmin);
 void loadFoodsData(const std::string& filename, LinkedList& foodList);
@@ -112,6 +114,18 @@ void run(bool adminCheck) {
                 
             case 7:
                 return;  // Exit and reset entire program, deallocate
+
+            case 8:
+                if (toggle == true)
+                {
+                    toggle = false;
+                    std::cout<<"Enhancements have been turned off." <<std::endl;
+                }
+                else
+                {
+                    toggle = true;
+                    std::cout<<"Enhancements have been turned on." <<std::endl;
+                }
             default:
                 std::cout << PERMISSION_DENIED_MSG << std::endl;
                 break;
@@ -119,22 +133,35 @@ void run(bool adminCheck) {
     }
 }
 
+//CLEAN UP!
 /// @brief Display menu to the user.
 /// @param adminCheck 
-void displayMainMenu(bool adminCheck){
-    std::cout << "Main Menu:" << std::endl;
-    std::cout << "    1. Display Meal Options" << std::endl;
-    std::cout << "    2. Purchase Meal" << std::endl;
-    std::cout << "    3. Save and Exit" << std::endl;
+void displayMainMenu(bool adminCheck, bool toggle){
+    while (toggle == false){
+        std::cout << "Main Menu:" << std::endl;
+        std::cout << "    1. Display Meal Options" << std::endl;
+        std::cout << "    2. Purchase Meal" << std::endl;
+        std::cout << "    3. Save and Exit" << std::endl;
     
-    if (adminCheck) { // Must be admin to view the admin options.
-        std::cout << "Administrator-Only Menu:" << std::endl;
-        std::cout << "    4. Add Food" << std::endl;
-        std::cout << "    5. Remove Food" << std::endl;
-        std::cout << "    6. Display Balance" << std::endl;
-        std::cout << "    7. Abort Program" << std::endl;
+        if (adminCheck) { // Must be admin to view the admin options.
+            std::cout << "Administrator-Only Menu:" << std::endl;
+            std::cout << "    4. Add Food" << std::endl;
+            std::cout << "    5. Remove Food" << std::endl;
+            std::cout << "    6. Display Balance" << std::endl;
+            std::cout << "    7. Abort Program" << std::endl;
+            std::cout << "    8. Toggle Enhancements" << std::endl;
+        }
+
+        if (choice == "help") {
+            std::cout << PERMISSION_DENIED_MSG << std::endl;
+        } 
+    } else {
+        if (choice == "help"){
+            DisplayHelpMain()
+        }
     }
-    }
+
+}
 
 /// @brief Loading the foods.dat file and inserting the nodes into a linked list with param foodList
 /// @param filename 

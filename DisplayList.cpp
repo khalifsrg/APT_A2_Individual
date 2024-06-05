@@ -13,35 +13,36 @@ const int PADDING_VALUE = 6;
 
 /// @brief Display the meal options through the food items that are stored in the LinkedList "foodList"
 /// @param foodList 
-void DisplayList::displayMealOptions(LinkedList& foodList) {
-    //Code Display Meal options with input.
-    Node* current = foodList.getHead(); // Get the head of the foodList
-    if (!current) {
-        std::cout << "No food items available." << std::endl;
-        return;
-    }
-    // Space for better readability.
-    std::cout << std::endl;
-    std::cout << std::endl;
-    std::cout << "Food Menu" << std::endl;
-    std::cout << "----------" << std::endl;
-    // Print the table header
-    std::cout << std::setw(PADDING_ID) << std::left << "ID" << LINE; //ID is left-aligned with width of 6 chars
-    std::cout << std::setw(PADDING_MAX) << std::left << " Name" << LINE; //Length is left-aligned with width of 51 chars
-    std::cout << std::setw(PADDING_LENGTH) << std::left << "Length" << std::endl; //Length is left-aligned with width of 5 chars
-
-    std::cout << "---------------------------------------------------------------------" << std::endl;
+void DisplayList::displayMealOptions(LinkedList& foodList, bool toggle) {
     
+    if (toggle == false) {
+        //Code Display Meal options with input.
+        Node* current = foodList.getHead(); // Get the head of the foodList
+        if (!current) {
+            std::cout << "No food items available." << std::endl;
+            return;
+        }
+        // Space for better readability.
+        std::cout << std::endl;
+        std::cout << std::endl;
+        std::cout << "Food Menu" << std::endl;
+        std::cout << "----------" << std::endl;
+        // Print the table header
+        std::cout << std::setw(PADDING_ID) << std::left << "ID" << LINE; //ID is left-aligned with width of 6 chars
+        std::cout << std::setw(PADDING_MAX) << std::left << " Name" << LINE; //Length is left-aligned with width of 51 chars
+        std::cout << std::setw(PADDING_LENGTH) << std::left << "Length" << std::endl; //Length is left-aligned with width of 5 chars
 
-      // Iterate through the foodList and display details of each FoodItem
-    while (current != nullptr) {
+        std::cout << "---------------------------------------------------------------------" << std::endl;
+
+        // Iterate through the foodList and display details of each FoodItem
+        while (current != nullptr) {
         // Dereference the data pointer to access the FoodItem
         FoodItem* currentItem = static_cast<FoodItem*>(current->data);
         
         // Print the details of the FoodItem with manual padding
         std::cout << currentItem->id << LINE
                   << currentItem->name.substr(0, 45); // Limiting the name to 45 characters
-       for (int i = 0; i < PADDING_MAX - static_cast<int>(currentItem->name.length()); ++i) {
+        for (int i = 0; i < PADDING_MAX - static_cast<int>(currentItem->name.length()); ++i) {
             std::cout << " "; // Padding spaces to make the total width 50 characters
         }
         std::cout << LINE;
@@ -52,6 +53,11 @@ void DisplayList::displayMealOptions(LinkedList& foodList) {
         current = current->next;
     }
      std::cout << std::endl;
+
+    } else {
+        //TODO
+    }
+    
 }
 
 /// @brief Display the balance that is calculated through the quantity of the coins and value stored in the LinkedList "coinList"
