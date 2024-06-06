@@ -66,11 +66,31 @@ void run(bool adminCheck) {
 
         // Handle the user's choice
         if (choice == "1") {
-            // Display food options that are being sold.
-            displayList.displayMealOptions(foodList, toggle);
+            // Ask the user if they want to traverse the list forwards or backwards if toggle is true
+            if (toggle) {
+                // Enable doubly linked list functionality
+                foodList.setDoublyLinked(true);
+                
+                std::string traversalChoice;
+                std::cout << "Do you want to display the menu forwards or backwards? (f/b): ";
+                std::getline(std::cin, traversalChoice);
+
+                if (traversalChoice == "f") {
+                    std::cout << "Displaying forward:" << std::endl;
+                    foodList.displayForward();
+                } else if (traversalChoice == "b") {
+                    std::cout << "Displaying backward:" << std::endl;
+                    foodList.displayBackward();
+                } else {
+                    std::cout << "Invalid choice. Displaying forward by default:" << std::endl;
+                    foodList.displayForward();
+                }
+            } else {
+                // Display food options that are being sold.
+                displayList.displayMealOptions(foodList, toggle);
+            }
             std::cout << "Press enter to continue: ";
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n'); // Set stream to max and clears input buffer
-            std::cin.get(); // Wait for Enter key
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Set stream to max and clears input buffer
         } else if (choice == "2") {
             // Purchase a meal
             purchase.purchaseMeal(foodList, coinList, toggle); 

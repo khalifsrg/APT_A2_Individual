@@ -68,23 +68,23 @@ public:
     Price price;
     
     // how many of this food item do we have on hand? 
-    unsigned on_hand;    
+    unsigned on_hand;
+
+    bool toggle;    
 };
 
 /**
  * the node that holds the data about a food item stored in memory
  **/
-class Node
-{
+class Node {
 public:
     Node();
     ~Node();
-    Node(void* data, Node* nextNode); // Updated constructor to accept void* data
+    Node(void* data, Node* nextNode);
 
-    void* data; // Updated data type to void*
+    void* data;
     Node* next;
-
-
+    Node* prev;  // Add this line for doubly-linked list
 };
 
 #endif // NODE_H

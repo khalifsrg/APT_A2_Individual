@@ -1,19 +1,9 @@
 #include "Node.h"
 
-Node::Node() {
-    data = nullptr; // Initialize data pointer to nullptr
-    next = nullptr;
-}
-
+Node::Node() : data(nullptr), next(nullptr), prev(nullptr) {}
 
 Node::~Node() {
-    //delete data; 
+    // Assume data should be deleted by the class managing it.
 }
 
-Node::Node(void* item, Node* nextNode) {
-    data = item;       // Initialize data pointer to the provided item
-    next = nextNode;   // Initialize next pointer to the provided nextNode
-}
- 
-
-
+Node::Node(void* data, Node* nextNode) : data(data), next(nextNode), prev(nullptr) {}
