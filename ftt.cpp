@@ -10,14 +10,14 @@
 
 bool toggle = false;
 
-void displayMainMenu(bool adminCheck, bool &toggle);
+void displayMainMenu(bool adminCheck, bool& toggle);
 void run(bool isAdmin);
 void loadFoodsData(const std::string& filename, LinkedList& foodList);
 void loadCoinsData(const std::string& filename, LinkedList& coinList);
 void saveAndExit(const std::string& foodsFilename, const std::string& coinsFilename, LinkedList& foodList, LinkedList& coinList);
-void addFood(LinkedList& foodList);
-void removeFood(LinkedList& foodList);
-void purchaseMeal(LinkedList& foodList, LinkedList& coinList, bool toggle);
+void addFood(LinkedList& foodList, bool& toggle);
+void removeFood(LinkedList& foodList, bool& toggle);
+void purchaseMeal(LinkedList& foodList, LinkedList& coinList, bool& toggle);
 
 /// @brief Main Function 
 /// @param argc 
@@ -81,14 +81,14 @@ void run(bool adminCheck) {
         } else if (choice == "4") {
             // Safety check that user is an admin before allowing to run admin menu.
             if (adminCheck) {
-                addFood(foodList);
+                addFood(foodList, toggle);
             } else {
                 std::cout << PERMISSION_DENIED_MSG << std::endl;
             }
         } else if (choice == "5") {
             // Remove a food item 
             if (adminCheck) {
-                removeFood(foodList);
+                removeFood(foodList, toggle);
             } else {
                 std::cout << PERMISSION_DENIED_MSG << std::endl;
             }
@@ -116,11 +116,9 @@ void run(bool adminCheck) {
     }
 }
 
-
-
-//CLEAN UP!
 /// @brief Display menu to the user.
 /// @param adminCheck 
+/// @param toggle 
 void displayMainMenu(bool adminCheck, bool& toggle) {
     std::cout << "Main Menu:" << std::endl;
     std::cout << "    1. Display Meal Options" << std::endl;
@@ -240,12 +238,23 @@ void saveAndExit(const std::string& foodsFilename, const std::string& coinsFilen
 
 /// @brief Adds food to the foodList LL through user input and then calling the addFoodItem function
 /// @param foodList 
-void addFood(LinkedList& foodList) {
+/// @param toggle 
+void addFood(LinkedList& foodList, bool& toggle) {
     std::string name, description;
     int dollars, cents;
 
-    std::cout << "Enter the item name: ";
-    std::getline(std::cin >> std::ws, name);
+    while (true) {
+        std::cout << "Enter the item name: ";
+        std::getline(std::cin >> std::ws, name);
+
+        if (toggle && name == "help") {
+            DisplayHelp help;
+            help.displayHelpAdd();
+            continue; // Continue to prompt again after displaying help
+        }
+
+        break; // Exit the loop if name is not 'help'
+    }
 
     std::cout << "Enter the item description: ";
     std::getline(std::cin, description);
@@ -258,20 +267,31 @@ void addFood(LinkedList& foodList) {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     Price price{static_cast<unsigned int>(dollars), static_cast<unsigned int>(cents)};
-    foodList.addFoodItem(name, description, price);
+    foodList.addFoodItem(name, description, price, toggle);
 
     std::cout << "Food item added successfully!" << std::endl;
-
 }
 
-// Remove food from foodList, by getting the ID of the food item.
-void removeFood(LinkedList& foodList) {
+/// @brief Remove food from foodList, by getting the ID of the food item.
+/// @param foodList 
+/// @param toggle 
+void removeFood(LinkedList& foodList, bool& toggle) {
     std::string id;
 
-    std::cout << "Enter the ID of the food item to delete: ";
-    std::getline(std::cin >> std::ws, id);
+    while (true) {
+        std::cout << "Enter the ID of the food item to delete: ";
+        std::getline(std::cin >> std::ws, id);
 
-    foodList.deleteNode(id);
+        if (toggle && id == "help") {
+            DisplayHelp help;
+            help.displayHelpRemove();
+            continue; // Continue to prompt again after displaying help
+        }
+
+        break; // Exit the loop if id is not 'help'
+    }
+
+    foodList.deleteNode(id, toggle);
 }
 
 

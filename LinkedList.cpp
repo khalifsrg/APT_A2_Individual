@@ -42,7 +42,7 @@ Node* LinkedList::getHead() const {
 
 /// @brief deleteNode function to remove the item from the LinkedList
 /// @param id 
-void LinkedList::deleteNode(const std::string& id) {
+void LinkedList::deleteNode(const std::string& id, bool toggle) {
     if (head == nullptr) {
         std::cout << "The List is Empty" << std::endl;
         return;
@@ -98,7 +98,7 @@ FoodItem* LinkedList::findFoodItemByID(const std::string& id) {
 /// @param name 
 /// @param desc 
 /// @param price 
-void LinkedList::addFoodItem(const std::string& name, const std::string& desc, const Price& price) {
+void LinkedList::addFoodItem(const std::string& name, const std::string& desc, const Price& price, bool toggle) {
     std::ostringstream idStream;
     idStream << "F" << std::setw(4) << std::setfill('0') << (count + 1);
     std::string id = idStream.str();

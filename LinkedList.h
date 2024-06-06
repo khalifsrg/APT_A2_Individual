@@ -15,13 +15,13 @@ public:
     void insertNode(Node* newNode);
 
     // Delete a food item from the list, checks id to find the specific item to be removed.
-    void deleteNode(const std::string& id);
+    void deleteNode(const std::string& id, bool toggle);
 
     // Basic method for finding food by ID.
     FoodItem* findFoodItemByID(const std::string& id);
 
     // Collect variables for new food item to be added, name, descripton and price. Then prints a message that it is successful.
-    void addFoodItem(const std::string& name, const std::string& desc, const Price& price);
+    void addFoodItem(const std::string& name, const std::string& desc, const Price& price, bool toggle);
 
 private:
     // the beginning of the list
